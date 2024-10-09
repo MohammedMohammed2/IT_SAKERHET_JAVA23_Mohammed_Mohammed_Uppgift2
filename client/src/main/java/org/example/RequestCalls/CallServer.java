@@ -1,22 +1,21 @@
 package org.example.RequestCalls;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 
 public class CallServer {
     static String baseUrl = "http://localhost:8080";
     private static  HttpClient httpClient;
+
+    private static String token;
 
     public static void registerUser(String email, String password, String role) throws URISyntaxException {
 
@@ -62,10 +61,16 @@ public class CallServer {
             HttpRequest loginUser = HttpRequest.newBuilder()
                     .uri(new URI(baseUrl + "/login"))
                     .header("Content-Type", "application/json")
+                    .GET()
                     .method("GET", HttpRequest.BodyPublishers.ofString(jsonGetTrascript))
                     .build();
 
             res = httpClient.send(loginUser, HttpResponse.BodyHandlers.ofString());
+
+            getTranscript = gson.fromJson(res.body(), Transcript.class);
+            token = getTranscript.getToken();
+
+
 
         } catch (URISyntaxException e) {
 
@@ -86,19 +91,18 @@ public class CallServer {
             return true;
         }
     }
-    public static void sendMessageCall(String message){
+    public static void sendMessageCall(String message) {
         Transcript transcript = new Transcript();
         transcript.setMessage(message);
         Gson gson = new Gson();
         String jsonMessageTrascript = gson.toJson(transcript);
+        System.out.println(token);
 
-
-        System.out.println(jsonMessageTrascript);
-
+        HttpRequest postRequest;
         try {
-            HttpRequest postRequest = HttpRequest.newBuilder()
-                    .uri(new URI(baseUrl+"/Message"))
-                    .header("Content-Type","application/json")
+            postRequest = HttpRequest.newBuilder()
+                    .uri(new URI(baseUrl + "/message"))
+                    .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonMessageTrascript))
                     .build();
         } catch (URISyntaxException e) {
@@ -106,5 +110,12 @@ public class CallServer {
         }
 
         httpClient = HttpClient.newHttpClient();
+        try {
+            httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

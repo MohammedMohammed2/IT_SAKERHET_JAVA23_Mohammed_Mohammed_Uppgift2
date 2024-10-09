@@ -3,6 +3,7 @@ package com.example.securitySpring.service;
 import com.example.securitySpring.model.AuthenticationResponse;
 import com.example.securitySpring.model.User;
 import com.example.securitySpring.repo.UserRepository;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,10 +20,10 @@ public class UserService {
 
     private final JwtService jwtService;
 
-
-
+    private String emailSaved;
 
     private final AuthenticationManager authenticationManager;
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -47,13 +48,21 @@ public class UserService {
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(request.getUsername()).orElseThrow();
+        User user = userRepository.findByEmail(request.getUsername());
+        emailSaved = request.getUsername();
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
 
-    public AuthenticationResponse message(User req){
+    public String sendMessage(User req) throws Exception {
+       User findUser = userRepository.findByEmail(emailSaved);
 
+       String messageEnkrypted = AesKeyMessage.AESKryptering(req.getMessage());
+        findUser.setMessage(messageEnkrypted);
+
+        userRepository.save(findUser);
+
+        return messageEnkrypted;
     }
 
 }

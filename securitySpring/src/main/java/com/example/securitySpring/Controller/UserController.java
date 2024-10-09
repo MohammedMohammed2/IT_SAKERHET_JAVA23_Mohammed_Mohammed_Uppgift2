@@ -4,7 +4,6 @@ import com.example.securitySpring.model.AuthenticationResponse;
 import com.example.securitySpring.model.User;
 import com.example.securitySpring.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,8 +27,8 @@ public class UserController {
         return ResponseEntity.ok(userService.login(req));
     }
     @PostMapping("/message")
-    public ResponseEntity<AuthenticationResponse>message(@RequestBody User req){
-        return ResponseEntity.ok(userService.login(req));
+    public ResponseEntity<String> message(@RequestBody User req) throws Exception {
+        return ResponseEntity.ok(userService.sendMessage(req));
     }
 
 }

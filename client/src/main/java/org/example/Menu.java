@@ -2,7 +2,11 @@ package org.example;
 
 import org.example.RequestCalls.CallServer;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.net.URISyntaxException;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class Menu {
@@ -14,6 +18,9 @@ public class Menu {
     private static String password;
     private static String role;
     private static boolean changeMenu = true;
+
+    public Menu() throws Exception {
+    }
 
     public static void menu() {
         while (changeMenu) {
@@ -95,5 +102,8 @@ public class Menu {
     }
     private static void seeMessage(){
 
+
     }
+
+
 }
