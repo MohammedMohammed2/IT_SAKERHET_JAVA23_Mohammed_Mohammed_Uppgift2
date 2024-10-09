@@ -27,5 +27,9 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse>login(@RequestBody User req){
         return ResponseEntity.ok(userService.login(req));
     }
+    @PostMapping("/message")
+    public ResponseEntity<AuthenticationResponse>message(@RequestBody User req){
+        return ResponseEntity.ok(userService.login(req));
+    }
 
 }

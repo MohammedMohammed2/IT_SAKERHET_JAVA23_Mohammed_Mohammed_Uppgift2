@@ -13,14 +13,14 @@ public class Menu {
     private static boolean isLoggedIn = false;
     private static String password;
     private static String role;
-    private static boolean runMenu = true;
+    private static boolean changeMenu = true;
 
     public static void menu() {
-        while (runMenu) {
+        while (changeMenu) {
             if (!isLoggedIn) {
                 loggedOutMenu();
             } else {
-               return;
+                loggedInMenu();
             }
         }
     }
@@ -56,7 +56,7 @@ public class Menu {
         System.out.println("1. Login");
         System.out.println("2. Register");
         System.out.println("3. Exit");
-        System.out.print("Enter your option: ");
+        System.out.print("Enter your choice: ");
         int choice = sc.nextInt();
 
         switch (choice) {
@@ -67,7 +67,33 @@ public class Menu {
                 register();
                 break;
             case 3:
-                runMenu = false;
+                changeMenu = false;
         }
+    }
+    private static void loggedInMenu(){
+        System.out.println("------------LoggedIN-----------");
+        System.out.println("1.Send Message");
+        System.out.println("2.See Message");
+        System.out.println("Enter your choice:");
+
+        int choice = sc.nextInt();
+
+        switch (choice){
+            case 1:
+                sendMessage();
+                break;
+            case 2:
+                seeMessage();
+                break;
+        }
+    }
+    private static void sendMessage(){
+        System.out.println("------------SendMessage-----------");
+        System.out.println("write any message:");
+        String messageSend = sc.next();
+        CallServer.sendMessageCall(messageSend);
+    }
+    private static void seeMessage(){
+
     }
 }

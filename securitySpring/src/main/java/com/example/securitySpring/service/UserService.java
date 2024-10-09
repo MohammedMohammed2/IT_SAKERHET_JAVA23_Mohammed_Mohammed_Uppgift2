@@ -52,4 +52,8 @@ public class UserService {
         return new AuthenticationResponse(token);
     }
 
+    public AuthenticationResponse message(User req){
+
+    }
+
 }
