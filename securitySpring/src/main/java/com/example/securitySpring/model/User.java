@@ -15,9 +15,6 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "username")
-    private String username;
     @Column(name = "email")
     private String email;
 
@@ -56,7 +53,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -90,7 +87,11 @@ public class User implements UserDetails {
         this.message = message;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -5,10 +5,7 @@ import com.example.securitySpring.model.User;
 import com.example.securitySpring.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -22,13 +19,12 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody User req){
+    public ResponseEntity<String> register(@RequestBody User req){
         return ResponseEntity.ok(userService.register(req));
     }
 
     @GetMapping("/login")
     public ResponseEntity<AuthenticationResponse>login(@RequestBody User req){
-
         return ResponseEntity.ok(userService.login(req));
     }
 

@@ -9,8 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
@@ -21,6 +19,9 @@ public class UserService {
 
     private final JwtService jwtService;
 
+
+
+
     private final AuthenticationManager authenticationManager;
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -29,16 +30,13 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(User request){
+    public String register(User req){
         User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setEmail(request.getEmail());
-
+        user.setEmail(req.getEmail());
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
+        user.setRole(req.getRole());
         user = userRepository.save(user);
-        String token = jwtService.generateToken(user);
-
-        return new AuthenticationResponse(token);
+        return "created";
     }
 
     public AuthenticationResponse login(User request){
@@ -49,7 +47,7 @@ public class UserService {
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        User user = userRepository.findByEmail(request.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }

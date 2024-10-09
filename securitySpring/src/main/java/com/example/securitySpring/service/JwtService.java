@@ -21,17 +21,10 @@ public class JwtService {
     }
 
     public boolean isValid(String token, UserDetails user){
-        String username = extractUser(token);
-        return (username.equals(user.getUsername()) && !isTokenExpaired(token) );
+        String email = extractUser(token);
+        return (email.equals(user.getUsername()));
     }
 
-    private boolean isTokenExpaired(String token){
-        return extractExpairation(token).before(new Date());
-    }
-
-    private Date extractExpairation(String token){
-        return extractClaim(token,Claims::getExpiration);
-    }
 
     public <T> T extractClaim(String token, Function<Claims,T> resolver){
         Claims claims = extractAllClaims(token);
