@@ -18,6 +18,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+
     public String extractUser(String token){
         return extractClaim(token,Claims::getSubject);
     }
@@ -43,6 +44,7 @@ public class JwtService {
      }
     private final String secretKey = "6942da8f5536a295f1bab67e4b78606d69c14bcda42c680f25090cde7e3f02c5";
 
+    //generates a token for user
     public String generateToken(User user){
          String token = Jwts
                  .builder()

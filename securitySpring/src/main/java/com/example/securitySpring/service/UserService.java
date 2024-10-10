@@ -30,6 +30,7 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
+    //craetes a new user in the database with the information given by the client
     public String register(User req){
         User user = new User();
         user.setEmail(req.getEmail());
@@ -39,6 +40,7 @@ public class UserService {
         return "created";
     }
 
+    //extracts the user upon login and generates a token
     public AuthenticationResponse login(User request){
 
         authenticationManager.authenticate(
@@ -53,6 +55,8 @@ public class UserService {
         return new AuthenticationResponse(token);
     }
 
+
+    // sends the message encrypted to the data base
     public String sendMessage(User req) throws Exception {
        User findUser = userRepository.findByEmail(emailSaved);
 
@@ -64,6 +68,7 @@ public class UserService {
         return messageEnkrypted;
     }
 
+    //finds the message of the user
     public String seeMessage(User req) throws Exception {
         User findencryptedMessage = userRepository.findMessageByEmail(emailSaved);
         String message=AesKeyMessage.AESDecrypt(findencryptedMessage.getMessage());

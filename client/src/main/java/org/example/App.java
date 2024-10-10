@@ -2,17 +2,13 @@ package org.example;
 
 import org.example.RequestCalls.CallServer;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.Base64;
 import java.util.Scanner;
 
-public class Menu {
+public class App {
     private static final Scanner sc = new Scanner(System.in);
     private static final BufferedReader bR = new BufferedReader(new InputStreamReader(System.in));
     private static String email;
@@ -22,7 +18,7 @@ public class Menu {
     private static String role;
     private static boolean changeMenu = true;
 
-    public Menu() throws Exception {
+    public App() throws Exception {
     }
 
     public static void menu() {

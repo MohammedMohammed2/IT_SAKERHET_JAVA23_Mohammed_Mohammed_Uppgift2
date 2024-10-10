@@ -1,5 +1,6 @@
 package com.example.securitySpring.model;
 
+//gets token
 public class AuthenticationResponse {
     private String token;
 

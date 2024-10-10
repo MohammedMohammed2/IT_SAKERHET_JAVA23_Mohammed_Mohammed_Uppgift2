@@ -10,7 +10,10 @@ import java.util.Base64;
 
 @Service
 public class AesKeyMessage {
+    //secret key
     private static final String secret_Key = "kYbIsTw1g6Gi63Ec0gnx3z==";
+
+    //Aes encrypted to encrypt the message
     public static String AESCrypt(String message) throws Exception {
         SecretKeySpec secretKey = new SecretKeySpec(secret_Key.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
@@ -18,6 +21,7 @@ public class AesKeyMessage {
         byte[] encryptedBytes = cipher.doFinal(message.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
+    //Aes decrypted to decrypt the message
     public static String AESDecrypt(String message) throws Exception {
         SecretKeySpec secretKey = new SecretKeySpec(secret_Key.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
