@@ -20,6 +20,7 @@ public class UserService {
     private final JwtService jwtService;
 
     private String emailSaved;
+    private String token;
 
     private final AuthenticationManager authenticationManager;
 
@@ -51,14 +52,15 @@ public class UserService {
         );
         User user = userRepository.findByEmail(request.getUsername());
         emailSaved = request.getUsername();
-        String token = jwtService.generateToken(user);
+        token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
 
 
     // sends the message encrypted to the data base
     public String sendMessage(User req) throws Exception {
-       User findUser = userRepository.findByEmail(emailSaved);
+        emailSaved = jwtService.extractUser(token);
+        User findUser = userRepository.findByEmail(emailSaved);
 
        String messageEnkrypted = AesKeyMessage.AESCrypt(req.getMessage());
         findUser.setMessage(messageEnkrypted);
@@ -70,6 +72,7 @@ public class UserService {
 
     //finds the message of the user
     public String seeMessage(User req) throws Exception {
+        emailSaved = jwtService.extractUser(token);
         User findencryptedMessage = userRepository.findMessageByEmail(emailSaved);
         String message=AesKeyMessage.AESDecrypt(findencryptedMessage.getMessage());
         return message;
