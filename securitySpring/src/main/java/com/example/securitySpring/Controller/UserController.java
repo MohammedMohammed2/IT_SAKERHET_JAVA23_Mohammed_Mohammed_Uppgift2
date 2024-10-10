@@ -26,9 +26,13 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse>login(@RequestBody User req){
         return ResponseEntity.ok(userService.login(req));
     }
-    @PostMapping("/message")
+    @PostMapping("/sendmessage")
     public ResponseEntity<String> message(@RequestBody User req) throws Exception {
         return ResponseEntity.ok(userService.sendMessage(req));
+    }
+    @GetMapping("/seemessage")
+    public ResponseEntity<String> seemessage(@RequestBody User req) throws Exception {
+        return ResponseEntity.ok(userService.seeMessage(req));
     }
 
 }

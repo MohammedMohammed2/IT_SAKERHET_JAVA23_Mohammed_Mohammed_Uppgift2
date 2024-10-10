@@ -5,13 +5,16 @@ import org.example.RequestCalls.CallServer;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.Scanner;
 
 public class Menu {
-
     private static final Scanner sc = new Scanner(System.in);
+    private static final BufferedReader bR = new BufferedReader(new InputStreamReader(System.in));
     private static String email;
 
     private static boolean isLoggedIn = false;
@@ -81,7 +84,7 @@ public class Menu {
         System.out.println("------------LoggedIN-----------");
         System.out.println("1.Send Message");
         System.out.println("2.See Message");
-        System.out.println("Enter your choice:");
+        System.out.println("Enter your choice: ");
 
         int choice = sc.nextInt();
 
@@ -96,13 +99,23 @@ public class Menu {
     }
     private static void sendMessage(){
         System.out.println("------------SendMessage-----------");
-        System.out.println("write any message:");
-        String messageSend = sc.next();
+        System.out.println("write any message: ");
+        String messageSend;
+        try {
+            messageSend = bR.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         CallServer.sendMessageCall(messageSend);
     }
     private static void seeMessage(){
-
-
+        try {
+            CallServer.seeMessageCallServer(email,password,role);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

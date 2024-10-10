@@ -3,7 +3,6 @@ package com.example.securitySpring.service;
 import com.example.securitySpring.model.AuthenticationResponse;
 import com.example.securitySpring.model.User;
 import com.example.securitySpring.repo.UserRepository;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,7 +56,7 @@ public class UserService {
     public String sendMessage(User req) throws Exception {
        User findUser = userRepository.findByEmail(emailSaved);
 
-       String messageEnkrypted = AesKeyMessage.AESKryptering(req.getMessage());
+       String messageEnkrypted = AesKeyMessage.AESCrypt(req.getMessage());
         findUser.setMessage(messageEnkrypted);
 
         userRepository.save(findUser);
@@ -65,4 +64,9 @@ public class UserService {
         return messageEnkrypted;
     }
 
+    public String seeMessage(User req) throws Exception {
+        User findencryptedMessage = userRepository.findMessageByEmail(emailSaved);
+        String message=AesKeyMessage.AESDecrypt(findencryptedMessage.getMessage());
+        return message;
+    }
 }
